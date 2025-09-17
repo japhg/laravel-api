@@ -29,8 +29,8 @@ class ProductController extends Controller
         $productCategories = CategoryEnum::toOptions();
         $products          = $this->productService->product
             ->with('media')
-            ->when($request->has('search'), fn($query) => $query->where('name', 'like', "%$search%")->orWhere('description', 'like', "%$search%"))
-            ->when($request->has('category'), fn($query) => $query->where('category', $request->input('category')))
+            ->search($request->input('search'))
+            ->filterByCategory($request->input('category'))
             ->orderBy('created_at', 'desc')
             ->paginate($per_page)
             ->withQueryString();

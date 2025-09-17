@@ -38,6 +38,10 @@ class ProductService
     {
         $product = $this->product->find($id);
 
+         if (! $product) {
+            throw new \Exception('Product not found!');
+        }
+
         $product->update([
             'name'          => $request->name,
             'category'      => $request->category,
@@ -46,7 +50,7 @@ class ProductService
         ]);
 
         if (! $product) {
-            throw new \Exception('Error in creating product!');
+            throw new \Exception('Error in updating product!');
         }
 
         if ($request->hasFile('files')) {
