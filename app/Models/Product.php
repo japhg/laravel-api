@@ -2,11 +2,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Product extends Model implements HasMedia
 {
@@ -26,8 +26,7 @@ class Product extends Model implements HasMedia
     #[Scope()]
     protected static function search(Builder $query, string $keyword): Builder
     {
-        return $query->where('name', 'like', "%$keyword%")
-            ->orWhere('description', 'like', "%$keyword%");
+        return $query->whereAny(['name', 'description'], 'like', "%{$keyword}%");
     }
 
     #[Scope()]
